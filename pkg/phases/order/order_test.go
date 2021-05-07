@@ -87,7 +87,7 @@ func TestMakePhase(t *testing.T) {
 		{
 			name: "Basic",
 			args: args{df: nil, name: ArgoRollouts},
-			want: Phase{Fn: nil, Name: "argo-rollouts"},
+			want: Phase{Fn: nil, Name: "argo-rollout"},
 		},
 	}
 	for _, tt := range tests {
