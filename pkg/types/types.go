@@ -5,11 +5,11 @@ import (
 	"net/url"
 	"strings"
 
-	v1 "k8s.io/api/core/v1"
-
 	"github.com/flanksource/karina/pkg/api/calico"
+	"github.com/flanksource/kommons"
 	konfigadm "github.com/flanksource/konfigadm/pkg/types"
 	yaml "gopkg.in/flanksource/yaml.v3"
+	v1 "k8s.io/api/core/v1"
 )
 
 type Enabled struct {
@@ -405,6 +405,11 @@ type Kubernetes struct {
 	ContainerRuntime string `yaml:"containerRuntime" json:"containerRuntime,omitempty"`
 	// True for a managed cluster where the user does not have access to the control plane
 	Managed bool `yaml:"managed,omitempty" json:"managed,omitempty"`
+}
+
+type Hook struct {
+	Before kommons.EnvVar `yaml:"before,omitempty" json:"before,omitempty"`
+	After  kommons.EnvVar `yaml:"after,omitempty" json:"after,omitempty"`
 }
 
 type Kind struct {

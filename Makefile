@@ -73,7 +73,11 @@ deploy-docs:
 
 .PHONY: lint
 lint: build
-	golangci-lint run --verbose --print-resources-usage
+	golangci-lint run --verbose --print-resources-usage --fix
+
+.PHONY: fmt
+fmt:
+	go fmt ./...
 
 # Generate code
 generate: controller-gen
