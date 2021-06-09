@@ -22,6 +22,7 @@ package types
 
 import (
 	"encoding/json"
+
 	"github.com/flanksource/karina/pkg/api/calico"
 	v1 "k8s.io/api/core/v1"
 )
