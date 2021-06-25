@@ -1,5 +1,12 @@
 name: E2E
-on: workflow_dispatch
+on:
+  push:
+    branches:
+      - master
+      - main
+  pull_request:
+    types: [opened, synchronize, reopened]
+
 jobs:
   gates:
     # The gates job is intended to derive all necessary information for branching logic further down the graph.
