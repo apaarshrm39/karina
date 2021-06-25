@@ -60,6 +60,7 @@ jobs:
         with:
           fetch-depth: 0
         if: ${{ env.FILE_CHANGES_TO_CORE_ARTIFACTS == 'true' }}
+      - run: shell git describe --abbrev=0 --tags --exact-match 2&>/dev/null || git describe --abbrev=0 --all
       # Cache go build cache, used to speedup go test
       - name: Go Build Cache
         if: ${{ env.FILE_CHANGES_TO_CORE_ARTIFACTS == 'true' }}
