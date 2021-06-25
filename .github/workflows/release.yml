@@ -9,6 +9,8 @@ jobs:
       image: flanksource/build-tools:v0.13.6
     steps:
       - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
       - run: make build
 
   binary:

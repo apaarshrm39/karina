@@ -2,7 +2,7 @@
 default: build
 NAME:=karina
 
-VERSION_TAG=$(VERSION)-$(shell date +"%Y%m%d%H%M%S")
+VERSION_TAG=$(shell git describe --abbrev=0 --tags)-$(shell date +"%Y%m%d%H%M%S")
 
 # Get the currently used golang install path (in GOPATH/bin, unless GOBIN is set)
 ifeq (,$(shell go env GOBIN))
@@ -25,7 +25,7 @@ release: linux darwin compress
 
 .PHONY: build
 build:
-	go build -o ./.bin/$(NAME) -ldflags "-X \"main.version=$(VERSION)\""  main.go
+	go build -o ./.bin/$(NAME) -ldflags "-X \"main.version=$(VERSION_TAG)\""  main.go
 
 
 .PHONY: linux

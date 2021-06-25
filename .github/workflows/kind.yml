@@ -55,7 +55,9 @@ jobs:
         run: |
           echo "::set-output name=go-build::$(go env GOCACHE)"
           echo "::set-output name=go-mod::$(go env GOMODCACHE)"
-      - uses: actions/checkout@main
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
         if: ${{ env.FILE_CHANGES_TO_CORE_ARTIFACTS == 'true' }}
       # Cache go build cache, used to speedup go test
       - name: Go Build Cache
