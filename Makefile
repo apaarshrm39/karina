@@ -2,7 +2,11 @@
 default: build
 NAME:=karina
 
-VERSION_TAG=$(shell git describe --abbrev=0 --tags)-$(shell date +"%Y%m%d%H%M%S")
+ifeq ($(VERSION),)
+  VERSION_TAG=$(shell git describe --abbrev=0 --tags)-$(shell date +"%Y%m%d%H%M%S")
+else
+  VERSION_TAG=$(VERSION)-$(shell date +"%Y%m%d%H%M%S")
+endif
 
 # Get the currently used golang install path (in GOPATH/bin, unless GOBIN is set)
 ifeq (,$(shell go env GOBIN))
