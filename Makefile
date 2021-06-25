@@ -1,5 +1,6 @@
 
 default: build
+
 NAME:=karina
 
 ifeq (,$(VERSION))
