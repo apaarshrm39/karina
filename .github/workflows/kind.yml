@@ -4,6 +4,7 @@ on:
     branches:
       - master
       - main
+      - test2
   pull_request:
     types: [opened, synchronize, reopened]
 
