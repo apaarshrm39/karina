@@ -88,7 +88,7 @@ func init() {
 			}
 
 			// gather the list of Pods from all
-			pods, err := client.CoreV1().Pods(namespace).List(context.TODO(), metav1.ListOptions{FieldSelector: "status.Phase!=Running"})
+			pods, err := client.CoreV1().Pods(namespace).List(context.TODO(), metav1.ListOptions{FieldSelector: "status.phase!=Running"})
 			if err != nil {
 				p.Fatalf("Failed to gather the list of pods from namespace %v: %v", namespace, err)
 			}
