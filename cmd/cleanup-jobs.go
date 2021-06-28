@@ -6,6 +6,7 @@ import (
 
 	"github.com/spf13/cobra"
 	v1 "k8s.io/api/batch/v1"
+	v1p "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes"
 )
@@ -71,6 +72,57 @@ func init() {
 		},
 	}
 
+	Pods := &cobra.Command{
+		Use:       "pods",
+		Short:     "Delete non running Pods",
+		ValidArgs: []string{"jobs"},
+		Args:      cobra.MinimumNArgs(0),
+		Run: func(cmd *cobra.Command, args []string) {
+			p := getPlatform(cmd)
+			client, err := p.GetClientset()
+			if err != nil {
+				p.Fatalf("unable to get clientset: %v", err)
+			}
+
+			if namespace == "" {
+				namespace = metav1.NamespaceAll
+			}
+
+			// gather the list of Pods from all
+			pods, err := client.CoreV1().Pods(namespace).List(context.TODO(), metav1.ListOptions{})
+			if err != nil {
+				p.Fatalf("Failed to gather the list of jobs from namespace %v: %v", namespace, err)
+			}
+
+			// WaitGroup to synchronize go routines execution
+			wg := sync.WaitGroup{}
+
+			for _, po := range pods.Items {
+				wg.Add(1)
+
+				go func(po v1p.Pod, clientSet *kubernetes.Clientset) {
+
+					condition := po.Status.Phase
+
+					// if the Condition of the Pod is not running, delete the Pod
+					if condition != "Running" {
+						p.Infof("Removing failed pod %v from namespace %v. Failed reason: %v", po.Name, po.Namespace, po.Status)
+						if err = client.CoreV1().Pods(po.Namespace).Delete(context.TODO(), po.Name, metav1.DeleteOptions{}); err != nil {
+							p.Errorf("Failed to delete pod: %v", err)
+						}
+
+					}
+
+					wg.Done()
+				}(po, client)
+			}
+
+			wg.Wait()
+
+		},
+	}
+
 	Jobs.Flags().String("namespace", "", "Namespace to cleanup failed jobs.")
-	Cleanup.AddCommand(Jobs)
+	Pods.Flags().String("namespace", "", "Namespace to cleanup failed jobs.")
+	Cleanup.AddCommand(Jobs, Pods)
 }
