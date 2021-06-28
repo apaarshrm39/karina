@@ -54,7 +54,7 @@ var Deletefailed = &cobra.Command{
 
 				// if the Condition of the Pod is not running, delete the Pod
 				if condition != "Running" {
-					p.Infof("Removing failed pod %v from namespace %v. Failed reason: %v", po.Name, po.Namespace, po.Status.Phase)
+					p.Infof("Removing failed pod %v from namespace %v. Failed reason: %v", po.Name, po.Namespace, po.Status)
 					if err = client.CoreV1().Pods(po.Namespace).Delete(context.TODO(), po.Name, metav1.DeleteOptions{}); err != nil {
 						p.Errorf("Failed to delete pod: %v", err)
 					}
