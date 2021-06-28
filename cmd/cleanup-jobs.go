@@ -58,7 +58,7 @@ func init() {
 						// if the type of the JobCondition is equal to "Failed", delete the job
 						if conditions.Type == "Failed" {
 							p.Infof("Removing failed job %v from namespace %v. Failed reason: %v", j.Name, j.Namespace, conditions.Reason)
-							if err = clientSet.BatchV1().Jobs(namespace).Delete(context.TODO(), j.Name, metav1.DeleteOptions{}); err != nil {
+							if err = clientSet.BatchV1().Jobs(j.Namespace).Delete(context.TODO(), j.Name, metav1.DeleteOptions{}); err != nil {
 								p.Errorf("Failed to delete job: %v", err)
 							}
 							break
