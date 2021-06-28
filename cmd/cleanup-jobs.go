@@ -121,9 +121,9 @@ func init() {
 		},
 	}
 
-	Jobs.Flags().StringP("namespace", "ns", "", "Namespace to cleanup failed jobs(Required).")
+	Jobs.Flags().StringP("namespace", "n", "", "Namespace to cleanup failed jobs(Required).")
 	Jobs.Flags().BoolVarP(&all, "all", "a", false, "all namespaces")
-	Pods.Flags().StringP("namespace", "ns", "", "Namespace to cleanup non running pods(Required).")
+	Pods.Flags().StringP("namespace", "n", "", "Namespace to cleanup non running pods(Required).")
 	Pods.Flags().BoolVarP(&all, "all", "a", false, "all namespaces")
 	Cleanup.AddCommand(Jobs, Pods)
 }
