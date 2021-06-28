@@ -19,10 +19,9 @@ var Cleanup = &cobra.Command{
 func init() {
 	// CleanupJobs removes all failed jobs in a given namespace
 	Jobs := &cobra.Command{
-		Use:       "jobs",
-		Short:     "remove all failed jobs in a given namespace",
-		ValidArgs: []string{"jobs"},
-		Args:      cobra.MinimumNArgs(0),
+		Use:   "jobs",
+		Short: "remove all failed jobs in a given namespace",
+		Args:  cobra.ExactArgs(1),
 		Run: func(cmd *cobra.Command, args []string) {
 
 			namespace, _ := cmd.Flags().GetString("namespace")
@@ -71,12 +70,11 @@ func init() {
 			wg.Wait()
 		},
 	}
-
+	var all bool
 	Pods := &cobra.Command{
-		Use:       "pods",
-		Short:     "Delete non running Pods",
-		ValidArgs: []string{"jobs"},
-		Args:      cobra.MinimumNArgs(0),
+		Use:   "pods",
+		Short: "Delete non running Pods",
+		Args:  cobra.ExactArgs(1),
 		Run: func(cmd *cobra.Command, args []string) {
 			p := getPlatform(cmd)
 			client, err := p.GetClientset()
@@ -84,14 +82,15 @@ func init() {
 				p.Fatalf("unable to get clientset: %v", err)
 			}
 
-			if namespace == "" {
+			namespace, _ := cmd.Flags().GetString("namespace")
+			if all {
 				namespace = metav1.NamespaceAll
 			}
 
 			// gather the list of Pods from all
 			pods, err := client.CoreV1().Pods(namespace).List(context.TODO(), metav1.ListOptions{})
 			if err != nil {
-				p.Fatalf("Failed to gather the list of jobs from namespace %v: %v", namespace, err)
+				p.Fatalf("Failed to gather the list of pods from namespace %v: %v", namespace, err)
 			}
 
 			// WaitGroup to synchronize go routines execution
@@ -122,7 +121,9 @@ func init() {
 		},
 	}
 
-	Jobs.Flags().String("namespace", "", "Namespace to cleanup failed jobs.")
-	Pods.Flags().String("namespace", "", "Namespace to cleanup failed jobs.")
+	Jobs.Flags().StringP("namespace", "ns", "", "Namespace to cleanup failed jobs(Required).")
+	Jobs.Flags().BoolVarP(&all, "all", "a", false, "all namespaces")
+	Pods.Flags().StringP("namespace", "ns", "", "Namespace to cleanup non running pods(Required).")
+	Jobs.MarkFlagRequired("namespace")
 	Cleanup.AddCommand(Jobs, Pods)
 }
