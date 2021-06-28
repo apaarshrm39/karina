@@ -22,7 +22,6 @@ func init() {
 	Jobs := &cobra.Command{
 		Use:   "jobs",
 		Short: "remove all failed jobs in a given namespace",
-		Args:  cobra.ExactArgs(1),
 		Run: func(cmd *cobra.Command, args []string) {
 
 			namespace, _ := cmd.Flags().GetString("namespace")
@@ -74,7 +73,6 @@ func init() {
 	Pods := &cobra.Command{
 		Use:   "pods",
 		Short: "Delete non running Pods",
-		Args:  cobra.ExactArgs(1),
 		Run: func(cmd *cobra.Command, args []string) {
 			p := getPlatform(cmd)
 			client, err := p.GetClientset()
