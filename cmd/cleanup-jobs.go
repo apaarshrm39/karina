@@ -101,7 +101,7 @@ func init() {
 
 				go func(po v1p.Pod, clientSet *kubernetes.Clientset) {
 
-					p.Infof("Removing failed pod %v from namespace %v. Failed reason: %v", po.Name, po.Namespace, po.Status)
+					p.Infof("Removing failed pod %v from namespace %v. Failed reason: %v", po.Name, po.Namespace, po.Status.Reason)
 					if err = client.CoreV1().Pods(po.Namespace).Delete(context.TODO(), po.Name, metav1.DeleteOptions{}); err != nil {
 						p.Errorf("Failed to delete pod: %v", err)
 					}
