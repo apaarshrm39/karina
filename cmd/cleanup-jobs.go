@@ -17,6 +17,7 @@ var Cleanup = &cobra.Command{
 }
 
 func init() {
+	var all bool
 	// CleanupJobs removes all failed jobs in a given namespace
 	Jobs := &cobra.Command{
 		Use:   "jobs",
@@ -26,7 +27,7 @@ func init() {
 
 			namespace, _ := cmd.Flags().GetString("namespace")
 
-			if namespace == "" {
+			if all {
 				namespace = metav1.NamespaceAll
 			}
 
@@ -70,7 +71,6 @@ func init() {
 			wg.Wait()
 		},
 	}
-	var all bool
 	Pods := &cobra.Command{
 		Use:   "pods",
 		Short: "Delete non running Pods",
@@ -124,6 +124,6 @@ func init() {
 	Jobs.Flags().StringP("namespace", "ns", "", "Namespace to cleanup failed jobs(Required).")
 	Jobs.Flags().BoolVarP(&all, "all", "a", false, "all namespaces")
 	Pods.Flags().StringP("namespace", "ns", "", "Namespace to cleanup non running pods(Required).")
-	Jobs.MarkFlagRequired("namespace")
+	Pods.Flags().BoolVarP(&all, "all", "a", false, "all namespaces")
 	Cleanup.AddCommand(Jobs, Pods)
 }
