@@ -88,7 +88,7 @@ func init() {
 			}
 
 			// gather the list of Pods from all
-			pods, err := client.CoreV1().Pods(namespace).List(context.TODO(), metav1.ListOptions{})
+			pods, err := client.CoreV1().Pods(namespace).List(context.TODO(), metav1.ListOptions{FieldSelector: "status.Phase!=Running"})
 			if err != nil {
 				p.Fatalf("Failed to gather the list of pods from namespace %v: %v", namespace, err)
 			}
@@ -101,15 +101,9 @@ func init() {
 
 				go func(po v1p.Pod, clientSet *kubernetes.Clientset) {
 
-					condition := po.Status.Phase
-
-					// if the Condition of the Pod is not running, delete the Pod
-					if condition != "Running" {
-						p.Infof("Removing failed pod %v from namespace %v. Failed reason: %v", po.Name, po.Namespace, po.Status)
-						if err = client.CoreV1().Pods(po.Namespace).Delete(context.TODO(), po.Name, metav1.DeleteOptions{}); err != nil {
-							p.Errorf("Failed to delete pod: %v", err)
-						}
-
+					p.Infof("Removing failed pod %v from namespace %v. Failed reason: %v", po.Name, po.Namespace, po.Status)
+					if err = client.CoreV1().Pods(po.Namespace).Delete(context.TODO(), po.Name, metav1.DeleteOptions{}); err != nil {
+						p.Errorf("Failed to delete pod: %v", err)
 					}
 
 					wg.Done()
@@ -121,9 +115,9 @@ func init() {
 		},
 	}
 
-	Jobs.Flags().StringP("namespace", "n", "", "Namespace to cleanup failed jobs(Required).")
-	Jobs.Flags().BoolVarP(&all, "all", "a", false, "all namespaces")
-	Pods.Flags().StringP("namespace", "n", "", "Namespace to cleanup non running pods(Required).")
-	Pods.Flags().BoolVarP(&all, "all", "a", false, "all namespaces")
+	Jobs.Flags().StringP("namespace", "n", "", "Namespace to cleanup failed jobs.")
+	Jobs.Flags().BoolVarP(&all, "all", "a", false, "cleanup failed jobs from all namespaces")
+	Pods.Flags().StringP("namespace", "n", "", "Namespace to cleanup non running pods.")
+	Pods.Flags().BoolVarP(&all, "all", "a", false, "cleanup non running flags from all namespaces")
 	Cleanup.AddCommand(Jobs, Pods)
 }
