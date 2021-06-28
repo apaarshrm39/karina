@@ -22,6 +22,7 @@ func init() {
 	Jobs := &cobra.Command{
 		Use:   "jobs",
 		Short: "remove all failed jobs in a given namespace",
+		Args:  cobra.ExactArgs(0),
 		Run: func(cmd *cobra.Command, args []string) {
 
 			namespace, _ := cmd.Flags().GetString("namespace")
@@ -73,6 +74,7 @@ func init() {
 	Pods := &cobra.Command{
 		Use:   "pods",
 		Short: "Delete non running Pods",
+		Args:  cobra.ExactArgs(0),
 		Run: func(cmd *cobra.Command, args []string) {
 			p := getPlatform(cmd)
 			client, err := p.GetClientset()
@@ -120,8 +122,8 @@ func init() {
 	}
 
 	Jobs.Flags().StringP("namespace", "n", "", "Namespace to cleanup failed jobs(Required).")
-	Jobs.Flags().BoolVarP(&all, "all", "a", false, "all namespaces")
+	Jobs.Flags().BoolVarP(&all, "all", "a", true, "all namespaces")
 	Pods.Flags().StringP("namespace", "n", "", "Namespace to cleanup non running pods(Required).")
-	Pods.Flags().BoolVarP(&all, "all", "a", false, "all namespaces")
+	Pods.Flags().BoolVarP(&all, "all", "a", true, "all namespaces")
 	Cleanup.AddCommand(Jobs, Pods)
 }
