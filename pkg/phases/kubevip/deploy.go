@@ -1,12 +1,11 @@
 package kubevip
 
 import (
-	"github.com/flanksource/karina/pkg/constants"
 	"github.com/flanksource/karina/pkg/platform"
 )
 
 const (
-	Namespace = constants.PlatformSystem
+	Namespace ="kube-system"
 	Name      = "kube-vip"
 )
 

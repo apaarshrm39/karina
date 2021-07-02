@@ -34,7 +34,7 @@ import (
 	"github.com/flanksource/karina/pkg/phases/konfigmanager"
 	"github.com/flanksource/karina/pkg/phases/kpack"
 	"github.com/flanksource/karina/pkg/phases/kuberesourcereport"
-	"github.com/flanksource/karina/pkg/phases/Kubevip"
+	"github.com/flanksource/karina/pkg/phases/kubevip"
 	"github.com/flanksource/karina/pkg/phases/kubewebview"
 	"github.com/flanksource/karina/pkg/phases/logsexporter"
 	"github.com/flanksource/karina/pkg/phases/minio"
