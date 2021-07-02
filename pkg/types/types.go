@@ -556,6 +556,10 @@ func (ec *ExternalClusters) AddSelf(name string) {
 	(*ec)[name] = "https://kubernetes.default"
 }
 
+type Kubevip struct {
+	XDisabled  `yaml:",inline" json:",inline"`
+}
+
 // Configuration for [KubeWebView](https://github.com/hjacobs/kube-web-view) resource viewer
 type KubeWebView struct {
 	Disabled       bool   `yaml:"disabled,omitempty" json:"disabled,omitempty"`

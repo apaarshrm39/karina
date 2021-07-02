@@ -34,6 +34,7 @@ import (
 	"github.com/flanksource/karina/pkg/phases/konfigmanager"
 	"github.com/flanksource/karina/pkg/phases/kpack"
 	"github.com/flanksource/karina/pkg/phases/kuberesourcereport"
+	"github.com/flanksource/karina/pkg/phases/Kubevip"
 	"github.com/flanksource/karina/pkg/phases/kubewebview"
 	"github.com/flanksource/karina/pkg/phases/logsexporter"
 	"github.com/flanksource/karina/pkg/phases/minio"
@@ -86,6 +87,7 @@ var Phases = map[string]DeployFn{
 	"kpack":                kpack.Deploy,
 	"platform":             Platform,
 	"kube-resource-report": kuberesourcereport.Install,
+	"kube-vip":             kubevip.Deploy, 
 	"kube-web-view":        kubewebview.Install,
 	"logs-exporter":        logsexporter.Install,
 	"mongodb-operator":     mongodboperator.Deploy,

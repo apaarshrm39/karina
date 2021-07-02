@@ -59,6 +59,7 @@ type PlatformConfig struct {
 	Kpack                 Kpack                  `yaml:"kpack,omitempty" json:"kpack,omitempty"`
 	KubeResourceReport    *KubeResourceReport    `yaml:"kubeResourceReport,omitempty" json:"kubeResourceReport,omitempty"`
 	Kubernetes            Kubernetes             `yaml:"kubernetes" json:"kubernetes,omitempty"`
+	Kubevip               Kubevip               `yaml:"kube-vip,omitempty" json:"kube-vip,omitempty"`
 	KubeWebView           *KubeWebView           `yaml:"kubeWebView,omitempty" json:"kubeWebView,omitempty"`
 	Ldap                  *Ldap                  `yaml:"ldap,omitempty" json:"ldap,omitempty"`
 	LocalPath             LocalPath              `yaml:"localPath" json:"localPath"`
